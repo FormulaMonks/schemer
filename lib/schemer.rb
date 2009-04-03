@@ -38,7 +38,7 @@ module Schemer
       self.class.schema_columns.each do |column|
         ActiveRecord::Migration.add_column(self.class.table_name, column, :string) unless respond_to?(column.to_sym)
         (self.class.column_names - self.class.protected_columns).each do |column|
-          ActiveRecord::Migration.remove_column(column) unless self.class.schema_columns.include?(column.to_s)
+          ActiveRecord::Migration.remove_column(self.class.table_name, column) unless self.class.schema_columns.include?(column.to_s)
         end
       end
     end
