@@ -1,20 +1,13 @@
 module Schemer
-  def self.schema(*args)
-    base.extend ClassMethods
-    base.send(:include, InstanceMethods)
+  def schema(*args)
+    extend  ClassMethods
+    include InstanceMethods
     
-    schema_columns = args.collect(&:to_s)
+    class_inheritable_accessor :schema_columns
+    self.schema_columns = args.collect(&:to_s)
   end
 
   module ClassMethods
-    def schema_columns=(columns)
-      @@schema_columns = columns.reject{ |column| protected_columns.include?(column) }
-    end
-    
-    def schema_columns
-      @@schema_columns
-    end
-    
     def protected_columns
       %w( id )
     end
