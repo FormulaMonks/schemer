@@ -11,7 +11,7 @@ updated for you without worrying about migrations. Useful for when you want to
 play around with real data handling during extremely rapid prototyping but you
 really don't care about keeping the data or how it's defined.
 
-WARNING: This will create and delete data definitions on the fly with no
+**WARNING:** This will create and delete data definitions on the fly with no
 warning! Only use this with volatile data! Never attach it to an existing model
 you care about as it will start adding and dropping columns without your 
 consent!
