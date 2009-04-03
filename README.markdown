@@ -32,7 +32,7 @@ Need another column to play with?
       schema :username, :password, :email
     end
     
-Adds an `email` column the new time `User.new` is called.
+Adds an `email` column the next time `User.new` is called.
 
 Don't want a column anymore?
 
