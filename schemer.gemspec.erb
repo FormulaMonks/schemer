@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name = 'schemer'
-  s.version = '0.0.4'
+  s.version = '0.0.5'
   s.summary = %{On-the-fly ActiveRecord schema changes for extremely rapid prototyping.}
   s.date = %q{2009-04-03}
   s.authors = ["Ben Alavi"]
