@@ -8,8 +8,8 @@ Description
 
 Loosely define your schema in your ActiveRecord model and have it created and
 updated for you without worrying about migrations. Useful for when you want to
-play around with real data handling during extremely rapid prototyping but you
-really don't care about keeping the data or how it's defined.
+play around with real data handling during prototyping but you really don't 
+care about keeping the data or how it's defined.
 
 **WARNING:** This will create and delete data definitions on the fly with no
 warning! Only use this with volatile data! Never attach it to an existing model
@@ -41,6 +41,18 @@ Don't want a column anymore?
     end
     
 Removes the `username` column the next time `User.new` is called.
+
+Want a relationship?
+
+    class Widget < ActiveRecord::Base
+      schema :user_id
+  
+      belongs_to :user
+    end
+  
+Works just fine!
+
+**NOTE:** All columns are created as string columns.
 
 Installation
 ------------
