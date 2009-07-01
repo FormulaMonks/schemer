@@ -12,26 +12,30 @@ class FooTest < Test::Unit::TestCase
   context "defining the schema" do
     setup do
       Foo.schema :foo, :bar
-      @foo = Foo.new
     end
     
     should "create the foos table" do
       assert Foo.table_exists?
     end
     
-    should "create the foo column" do
-      assert @foo.respond_to?(:foo)
-    end
+    context "with an instance" do
+      setup do
+        @foo = Foo.new
+      end
+      
+      should "create the foo column" do
+        assert @foo.respond_to?(:foo)
+      end
 
-    should "create the bar column" do
-      assert @foo.respond_to?(:bar)
-    end
+      should "create the bar column" do
+        assert @foo.respond_to?(:bar)
+      end
+    end    
   end
   
   context "updating the schema" do
     setup do
       Foo.schema :foo, :bar
-      @foo = Foo.new
       Foo.schema :foo
       @foo = Foo.new
     end

@@ -2,11 +2,13 @@ require 'activerecord'
 
 module Schemer
   def schema(*args)
-    extend  ClassMethods
-    include InstanceMethods
+    extend ClassMethods
     
     class_inheritable_accessor :schema_columns
     self.schema_columns = args.collect(&:to_s)
+
+    update_schema
+    update_methods
   end
 
   module ClassMethods
@@ -34,14 +36,6 @@ module Schemer
       (schema_columns - column_names).each { |column| ActiveRecord::Migration.add_column(table_name, column, :string) }
       (column_names - protected_columns - schema_columns).each { |column| ActiveRecord::Migration.remove_column(table_name, column) }
     end    
-  end
-  
-  module InstanceMethods
-    def initialize(*args)
-      self.class.update_schema
-      self.class.update_methods
-      super
-    end
   end
 end
 
