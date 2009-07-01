@@ -1,5 +1,6 @@
 require 'rubygems'
 require 'contest'
+require 'override'
 require File.join(File.dirname(__FILE__), '..', 'lib', 'schemer')
 
 ActiveRecord::Base.establish_connection :adapter => 'sqlite3', :database => 'test/schemer_test.db'

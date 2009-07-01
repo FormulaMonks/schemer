@@ -13,7 +13,7 @@ care about keeping the data or how it's defined.
 
 **WARNING:** This will create and delete data definitions on the fly with no
 warning! Only use this with volatile data! Never attach it to an existing model
-you care about as it will start adding and dropping columns without your 
+you care about as it will start adding and dropping columns without your
 consent!
 
 Usage
@@ -24,7 +24,7 @@ Usage
     end
     
 Creates a `users` table if it doesn't exist, complete with `username` and 
-`password` columns the first time you call `User.new`.
+`password` columns the first time the User class is loaded.
 
 Need another column to play with?
 
@@ -32,33 +32,30 @@ Need another column to play with?
       schema :username, :password, :email
     end
     
-Adds an `email` column the next time `User.new` is called.
+Adds an `email` column the next time `User` class is loaded.
 
-Don't want a column anymore?
-
-    class User < ActiveRecord::Base
-      schema :password, :email
-    end
-    
-Removes the `username` column the next time `User.new` is called.
-
-Want a relationship?
+Want a relationship? (but fear commitment...)
 
     class Widget < ActiveRecord::Base
-      schema :user_id
+      schema :user_id, :name
   
       belongs_to :user
     end
-  
-Works just fine!
+
+Works just fine, and you can drop it at any time!
+
+    class Widget < ActiveRecord::Base
+      schema :name
+    end
+
+Removes the `user_id` column the next time the `Widget` class is loaded.
 
 **NOTE:** All columns are created as string columns.
 
 Installation
 ------------
 
-    $ gem sources -a http://gems.github.com (you only have to do this once)
-    $ sudo gem install citrusbyte-schemer
+    $ sudo gem install citrusbyte-schemer --source=http://gems.github.com
 
 License
 -------
