@@ -2,12 +2,15 @@ require 'rubygems'
 require 'contest'
 require 'override'
 require File.join(File.dirname(__FILE__), '..', 'lib', 'schemer')
+require File.join(File.dirname(__FILE__), '..', 'lib', 'schemer', 'migrator')
 
 ActiveRecord::Base.establish_connection :adapter => 'sqlite3', :database => 'test/schemer_test.db'
 ActiveRecord::Base.logger = Logger.new(File.join(File.dirname(__FILE__), "debug.log"))
 
 class Foo < ActiveRecord::Base;end;
 ActiveRecord::Migration.drop_table(Foo.table_name) if Foo.table_exists?
+class Bar < ActiveRecord::Base;end;
+ActiveRecord::Migration.drop_table(Bar.table_name) if Bar.table_exists?
 
 class FooTest < Test::Unit::TestCase  
   context "defining the schema" do
@@ -31,7 +34,7 @@ class FooTest < Test::Unit::TestCase
       should "create the bar column" do
         assert @foo.respond_to?(:bar)
       end
-    end    
+    end
   end
   
   context "updating the schema" do
@@ -43,6 +46,21 @@ class FooTest < Test::Unit::TestCase
     
     should "remove the bar column" do
       assert !@foo.respond_to?(:bar)
+    end
+  end
+  
+  context "building a Rails migration" do
+    setup do
+      Foo.schema :foo, :bar
+    end
+    
+    should "output the migration for Foo" do
+      assert_equal(
+%Q{create_table :foos do |t|
+  t.string :foo
+  t.string :bar
+end}, Schemer::Migrator.migration(Foo)
+      )
     end
   end
 end

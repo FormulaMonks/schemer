@@ -50,6 +50,28 @@ Works just fine, and you can drop it at any time!
 
 Removes the `user_id` column the next time the `Widget` class is loaded.
 
+Feeling more confident and ready to make that big leap to migrations? Just run:
+
+    rake schemer:migration
+    
+To get:
+
+    Migration from schema declarations in User, Widget
+
+    create_table :users do |t|
+      t.string :username
+      t.string :password
+      t.string :email
+    end
+
+    create_table :widgets do |t|
+      t.string :name
+    end
+
+Then you can paste the output into a migration file, setup your columns (don't
+forget your indexes!) and get rid of your `schema` calls in the listed classes
+and you're on your way to the big leagues!
+
 **NOTE:** All columns are created as string columns.
 
 Installation

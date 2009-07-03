@@ -35,7 +35,7 @@ module Schemer
       create_table unless table_exists?
       (schema_columns - column_names).each { |column| ActiveRecord::Migration.add_column(table_name, column, :string) }
       (column_names - protected_columns - schema_columns).each { |column| ActiveRecord::Migration.remove_column(table_name, column) }
-    end    
+    end
   end
 end
 
