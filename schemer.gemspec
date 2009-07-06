@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name     = 'schemer'
-  s.version  = '0.0.9'
+  s.version  = '0.0.10'
   s.summary  = %{On-the-fly ActiveRecord schema changes for extremely rapid prototyping.}
   s.date     = %q{2009-07-05}
   s.authors  = ["Ben Alavi"]
@@ -12,9 +12,8 @@ Gem::Specification.new do |s|
 		'Rakefile',
 		'lib/schemer/migrator.rb',
 		'lib/schemer.rb',
+		'lib/schemer/tasks/schemer.rake',
 		'rails/init.rb',
-		'test/schemer_test.rb',
-		'tasks/schemer.rake'
+		'test/schemer_test.rb'
   ]
 end
-

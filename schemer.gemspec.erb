@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name     = 'schemer'
-  s.version  = '0.0.9'
+  s.version  = '0.0.10'
   s.summary  = %{On-the-fly ActiveRecord schema changes for extremely rapid prototyping.}
   s.date     = %q{2009-07-05}
   s.authors  = ["Ben Alavi"]
@@ -12,10 +12,9 @@ Gem::Specification.new do |s|
       'LICENSE',
       'Rakefile',
       'lib/**/*.rb',
+      'lib/**/*.rake',
       'rails/**/*',
-      'test/**/*.rb',
-      'tasks/**/*.rake'
+      'test/**/*.rb'
     ]).collect{ |file| "\t\t'#{file}'" }.join(",\n") %>
   ]
 end
-

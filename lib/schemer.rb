@@ -37,12 +37,19 @@ module Schemer
     def update_schema
       create_table unless table_exists?
 
+      columns.reject{ |column| protected_columns.include?(column.name) }.each do |column|
+        if !schema_columns.has_key?(column.name)
+          # remove any extraneous columns
+          ActiveRecord::Migration.remove_column(table_name, column.name)
+        elsif column.type != schema_columns[column.name]
+          # change any columns w/ wrong type
+          ActiveRecord::Migration.change_column(table_name, column.name, schema_columns[column.name])
+        end
+      end
+
+      # add any missing columns
       (schema_columns.keys - column_names).each do |column|
         ActiveRecord::Migration.add_column(table_name, column, schema_columns[column])
-      end
-      
-      (column_names - protected_columns - schema_columns.keys).each do |column|
-        ActiveRecord::Migration.remove_column(table_name, column)
       end
     end
   end

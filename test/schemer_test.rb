@@ -69,6 +69,12 @@ class FooTest < Test::Unit::TestCase
     should "create foo column using string datatype" do
       assert_equal '5', @foo.foo
     end
+    
+    should "recreate foo column as integer" do
+      Foo.schema({ :foo => :integer }, { :bar => :integer }, :baz)
+      foo = Foo.find(Foo.create!(:foo => '5', :bar => '5').id)
+      assert_equal 5, foo.foo
+    end
   end
   
   context "building a Rails migration" do
