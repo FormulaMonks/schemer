@@ -5,7 +5,10 @@ module Schemer
     extend ClassMethods
     
     class_inheritable_accessor :schema_columns
-    self.schema_columns = args.collect(&:to_s)
+    self.schema_columns = {}
+    args.collect{ |a| a.is_a?(Hash) ? a.stringify_keys : { a.to_s => :string } }.each do |column|
+      self.schema_columns.merge!(column)
+    end 
 
     update_schema
     update_methods
@@ -17,7 +20,7 @@ module Schemer
     def protected_columns
       %w( id )
     end
-
+    
     # Create the underlying table for this class
     def create_table
       ActiveRecord::Migration.create_table(table_name) do |t|;end;
@@ -33,8 +36,14 @@ module Schemer
     # Update the underlying schema as defined by schema call
     def update_schema
       create_table unless table_exists?
-      (schema_columns - column_names).each { |column| ActiveRecord::Migration.add_column(table_name, column, :string) }
-      (column_names - protected_columns - schema_columns).each { |column| ActiveRecord::Migration.remove_column(table_name, column) }
+
+      (schema_columns.keys - column_names).each do |column|
+        ActiveRecord::Migration.add_column(table_name, column, schema_columns[column])
+      end
+      
+      (column_names - protected_columns - schema_columns.keys).each do |column|
+        ActiveRecord::Migration.remove_column(table_name, column)
+      end
     end
   end
 end

@@ -11,6 +11,9 @@ updated for you without worrying about migrations. Useful for when you want to
 play around with real data handling during prototyping but you really don't 
 care about keeping the data or how it's defined.
 
+This isn't meant to be a replacement for migrations, it is simply a way to get
+started on a project quickly while you iron out your data definitions.
+
 **WARNING:** This will create and delete data definitions on the fly with no
 warning! Only use this with volatile data! Never attach it to an existing model
 you care about as it will start adding and dropping columns without your
@@ -50,6 +53,15 @@ Works just fine, and you can drop it at any time!
 
 Removes the `user_id` column the next time the `Widget` class is loaded.
 
+Have a need for a particular type of column?
+
+    class Widget < ActiveRecord::Base
+      schema :name, { :size => :integer }, :description
+    end
+    
+Will create `size` as an `:integer` column so you can take advantage of Rails'
+casting.
+
 Feeling more confident and ready to make that big leap to migrations? Just run:
 
     rake schemer:migration
@@ -66,13 +78,15 @@ To get:
 
     create_table :widgets do |t|
       t.string :name
+      t.integer :size
+      t.string :description
     end
 
 Then you can paste the output into a migration file, setup your columns (don't
 forget your indexes!) and get rid of your `schema` calls in the listed classes
 and you're on your way to the big leagues!
 
-**NOTE:** All columns are created as string columns.
+**NOTE:** All columns are created as string columns unless type is given.
 
 Installation
 ------------

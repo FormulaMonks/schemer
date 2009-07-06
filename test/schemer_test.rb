@@ -1,6 +1,7 @@
 require 'rubygems'
 require 'contest'
 require 'override'
+require 'ruby-debug'
 require File.join(File.dirname(__FILE__), '..', 'lib', 'schemer')
 require File.join(File.dirname(__FILE__), '..', 'lib', 'schemer', 'migrator')
 
@@ -46,6 +47,27 @@ class FooTest < Test::Unit::TestCase
     
     should "remove the bar column" do
       assert !@foo.respond_to?(:bar)
+    end
+  end
+  
+  context "with types" do
+    setup do
+      Foo.schema :foo, { :bar => :integer }, :baz
+      @foo = Foo.find(Foo.create!(:foo => '5', :bar => 5).id)
+    end
+    
+    should "create foo, bar and baz columns" do
+      assert @foo.respond_to?(:foo)
+      assert @foo.respond_to?(:bar)
+      assert @foo.respond_to?(:baz)
+    end
+    
+    should "create bar column using integer datatype" do
+      assert_equal 5, @foo.bar
+    end
+    
+    should "create foo column using string datatype" do
+      assert_equal '5', @foo.foo
     end
   end
   
