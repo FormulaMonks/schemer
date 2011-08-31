@@ -1,19 +1,17 @@
-require 'rubygems'
-require 'contest'
-require 'override'
-require 'ruby-debug'
-require File.join(File.dirname(__FILE__), '..', 'lib', 'schemer')
-require File.join(File.dirname(__FILE__), '..', 'lib', 'schemer', 'migrator')
+require File.join(File.dirname(__FILE__), "test_helper")
 
-ActiveRecord::Base.establish_connection :adapter => 'sqlite3', :database => 'test/schemer_test.db'
-ActiveRecord::Base.logger = Logger.new(File.join(File.dirname(__FILE__), "debug.log"))
+require "schemer/active_record"
 
-class Foo < ActiveRecord::Base;end;
-ActiveRecord::Migration.drop_table(Foo.table_name) if Foo.table_exists?
-class Bar < ActiveRecord::Base;end;
-ActiveRecord::Migration.drop_table(Bar.table_name) if Bar.table_exists?
+logger = Logger.new(File.join(OUTPUT, "debug.log"))
+ActiveRecord::Base.establish_connection :adapter => "sqlite3", :database => File.join(OUTPUT, "schemer_active_record_test.db")
+ActiveRecord::Base.logger = logger
 
-class FooTest < Test::Unit::TestCase  
+class ActiveRecordTest < Test::Unit::TestCase
+  class Foo < ActiveRecord::Base;end;
+  ActiveRecord::Migration.drop_table(Foo.table_name) if Foo.table_exists?
+  class Bar < ActiveRecord::Base;end;
+  ActiveRecord::Migration.drop_table(Bar.table_name) if Bar.table_exists?
+  
   context "defining the schema" do
     setup do
       Foo.schema :foo, :bar
@@ -53,7 +51,7 @@ class FooTest < Test::Unit::TestCase
   context "with types" do
     setup do
       Foo.schema :foo, { :bar => :integer }, :baz
-      @foo = Foo.find(Foo.create!(:foo => '5', :bar => 5).id)
+      @foo = Foo.find(Foo.create!(:foo => "5", :bar => 5).id)
     end
     
     should "create foo, bar and baz columns" do
@@ -67,12 +65,12 @@ class FooTest < Test::Unit::TestCase
     end
     
     should "create foo column using string datatype" do
-      assert_equal '5', @foo.foo
+      assert_equal "5", @foo.foo
     end
     
     should "recreate foo column as integer" do
       Foo.schema({ :foo => :integer }, { :bar => :integer }, :baz)
-      foo = Foo.find(Foo.create!(:foo => '5', :bar => '5').id)
+      foo = Foo.find(Foo.create!(:foo => "5", :bar => "5").id)
       assert_equal 5, foo.foo
     end
   end
@@ -87,7 +85,7 @@ class FooTest < Test::Unit::TestCase
 %Q{create_table :foos do |t|
   t.string :foo
   t.string :bar
-end}, Schemer::Migrator.migration(Foo)
+end}, Schemer::ActiveRecord::Migrator.migration(Foo)
       )
     end
   end

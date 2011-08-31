@@ -1,15 +1,18 @@
 Schemer
 =======
 
-On-the-fly ActiveRecord schema changes for extremely rapid prototyping.
+On-the-fly schema changes for very rapid prototyping, for ActiveRecord and
+Sequel ORMs.
 
 Description
 -----------
 
-Loosely define your schema in your ActiveRecord model and have it created and
-updated for you without worrying about migrations. Useful for when you want to
-play around with real data handling during prototyping but you really don't 
-care about keeping the data or how it's defined.
+Loosely define your schema in your model and have it created and updated for
+you without worrying about migrations.
+
+Useful for when you want to play around with real data handling during
+prototyping but you really don't care about keeping the data or how it's
+defined.
 
 This isn't meant to be a replacement for migrations, it is simply a way to get
 started on a project quickly while you iron out your data definitions.
@@ -19,13 +22,20 @@ warning! Only use this with volatile data! Never attach it to an existing model
 you care about as it will start adding and dropping columns without your
 consent!
 
-Usage
------
+Install
+-------
 
+    $ gem install schemer
+
+ActiveRecord
+------------
+    
+    require "schemer/active_record"
+    
     class User < ActiveRecord::Base
       schema :username, :password
     end
-    
+
 Creates a `users` table if it doesn't exist, complete with `username` and 
 `password` columns the first time the User class is loaded.
 
@@ -34,7 +44,7 @@ Need another column to play with?
     class User < ActiveRecord::Base
       schema :username, :password, :email
     end
-    
+
 Adds an `email` column the next time `User` class is loaded.
 
 Want a relationship? (but fear commitment...)
@@ -59,13 +69,13 @@ Have a need for a particular type of column?
       schema :name, { :size => :integer }, :description
     end
     
-Will create `size` as an `:integer` column so you can take advantage of Rails'
-casting.
+Will create `size` as an `:integer` column so you can take advantage of type
+loading.
 
-Feeling more confident and ready to make that big leap to migrations? Just run:
+Feeling more confident and ready to make that big leap to migrations? Run:
 
     rake schemer:migration
-    
+
 To get:
 
     Migration from schema declarations in User, Widget
@@ -88,15 +98,34 @@ and you're on your way to the big leagues!
 
 **NOTE:** All columns are created as string columns unless type is given.
 
-Installation
-------------
+Sequel
+------
 
-    $ sudo gem install citrusbyte-schemer --source=http://gems.github.com
+    require "schemer/sequel"
+
+    class Widget < Sequel::Model
+      plugin Schemer::Sequel
+      
+      schema :name, { :size => :integer }, :description
+    end
+    
+Usage is as above w/ ActiveRecord
+
+Test
+----
+
+    $ rake
+    
+Thanks!
+-------
+
+Michel Martens ([soveran](http://github.com/soveran)) + Cyril David
+([cyx](http://github.com/cyx)) for helping with Sequel support.
 
 License
 -------
 
-Copyright (c) 2009 Ben Alavi for Citrusbyte
+Copyright (c) 2009-2011 Ben Alavi for Citrusbyte
 
 Permission is hereby granted, free of charge, to any person
 obtaining a copy of this software and associated documentation

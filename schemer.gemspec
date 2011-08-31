@@ -1,19 +1,26 @@
+require "./lib/schemer"
+
 Gem::Specification.new do |s|
-  s.name     = 'schemer'
-  s.version  = '0.0.10'
-  s.summary  = %{On-the-fly ActiveRecord schema changes for extremely rapid prototyping.}
-  s.date     = %q{2009-07-05}
-  s.authors  = ["Ben Alavi"]
-  s.email    = "ben.alavi@citrusbyte.com"
+  s.name = "schemer"
+  s.version = Schemer::VERSION
+  s.summary = %{On-the-fly schema changes for extremely rapid prototyping.}
+  s.date = %q{2011-08-30}
+  s.authors = ["Ben Alavi"]
+  s.email = "benalavi@gmail.com"
   s.homepage = "http://github.com/citrusbyte/schemer"
-  s.files    = [
-    		'README.markdown',
-		'LICENSE',
-		'Rakefile',
-		'lib/schemer/migrator.rb',
-		'lib/schemer.rb',
-		'lib/schemer/tasks/schemer.rake',
-		'rails/init.rb',
-		'test/schemer_test.rb'
+  
+  s.files = [
+    "README.markdown",
+		"Rakefile",
+		"*.gemspec",
+		"lib/**/*.rb",
+		"test/**/*.rb"
   ]
+
+  s.executables = "schemer"
+  
+  s.add_development_dependency "contest"
+  s.add_development_dependency "contest"
+  s.add_development_dependency "contest"
+  s.add_development_dependency "contest"
 end
