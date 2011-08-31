@@ -2,8 +2,23 @@ require "sequel"
 
 module Schemer
   module Sequel
-    module ClassMethods    
-      # TODO: document
+    module ClassMethods
+      # Define a schema on your Sequel model.
+      # 
+      #     schema :name, { :age => :integer }, { :birthdate => :datetime }, :summary
+      # 
+      # Table + columns will be added automatically based on your definition.
+      # 
+      # If you remove a column, it will be removed from the table the next time
+      # the class is loaded.
+      # 
+      # If you change the type of a column, it will be also be updated the next
+      # time the class is loaded.
+      # 
+      # Likewise, adding a new column will add the column to your schema on the
+      # next class load.
+      # 
+      # Columns with no types are assumed to be strings.
       def schema(*args)
         @schema_columns = {}
         
@@ -20,14 +35,7 @@ module Schemer
       
       def schema_columns
         @schema_columns
-      end
-      
-      # Update ActiveRecord's automatically generated methods so we don't have to
-      # reload for schema changes to take effect
-      def update_methods
-        # undefine_attribute_methods
-        # @columns = @column_names = @columns_hash = @generated_methods = nil
-      end
+      end      
       
       # Update the underlying schema as defined by schema call
       def update_schema        
