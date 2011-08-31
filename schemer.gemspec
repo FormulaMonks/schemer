@@ -14,6 +14,7 @@ Gem::Specification.new do |s|
 		"Rakefile",
 		"*.gemspec",
 		"lib/**/*.rb",
+		"lib/**/*.rake",
 		"test/**/*.rb"
   ]
 
