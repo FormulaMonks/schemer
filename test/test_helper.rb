@@ -5,9 +5,6 @@ require "fileutils"
 require "contest"
 require "logger"
 
-# active_record 3.0.10
-# libsqlite3-dev + sqlite3 1.3.4
-
 begin
   require "ruby-debug"
 rescue LoadError
